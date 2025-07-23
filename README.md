@@ -2,6 +2,8 @@
 
 On a linux Operating system , the program to run and  integrate these commands is called as *shell* .
 
+*shell script* is a text file with linux commands  
+
 **BASH - Borne again shell** is most common implementation of shell programme  for linux systems  
 
 Bash has more advanced features compared to some of the simpler flavours of shell.   
@@ -74,18 +76,85 @@ cat errors.txt | grep Database > errors_with_database.txt  , ls , cat errors_wit
 
     vim db.conf  (to insert press i , then edit and save. to exit press `esc` : wq to quit)
 
+## Debugging 
 
-
-    
+**Manual Log Analysis with commands**
  
- 
+Filtering the logs based on the criticality 
 
-
+    grep "ERROR" application.log 
   
-      
- 
-
-
-
+    grep "FATAL" application.log
+  
+    grep "CRITICAL" application.log 
     
+    grep -c "ERROR" application.log    - give the total count. 
+
+finding Recent changes in log (less tha one day):
+  
+  `find . -name "*.log"   -mtime -1`    (This command finds the file that ends with .log in the current directory less than 1 day of modification time(-mtime))
+
+Imagine as a devops engineer , you'll have to perform the above task to check the recent modified files is always time consuming. so inorder to overcome this we can build a shell  script. 
+
+Place all the commands in one shell script and run the script everyday .
+
+  ` 
+
+    find . -name "*.log"   -mtime -1
+
+    grep "ERROR" application.log
+
+    grep "FATAL" application.log
+
+    grep "CRITICAL" application.log
+
+    grep "ERROR" system.log
+
+    grep "FATAL" system.log
+
+    grep "CRITICAL" system  .log
+ `
+   
+# creating First shell script 
+
+`touch` this commands helps to create a new file in the present directory 
+    
+    touch  analyse-logs.sh
+
+why sh extension ? - just a visual clue to help script files  and syntax highlighting . 
+
+files ending with .sh could be of bash script ,  zshell script   or shell script , but how dies interpreter know  which shell program the script is when it executes ?
+
+ 
+`#!` is the *shebang* also called as hashbang is a character sequence at a very top of script that tells the operator system which interpreter to use to run the file.
+
+for bash it is `#!/bin/bash` 
+
+and for POSIX shell scripts it is `#!/bin/sh`
+
+*Formatting and Readability Improvements*
+
+`echo` is a built in command helps in printing text or variables to terminal 
+ 
+  echo -e "\n this \n will be interpreted by echo command to print in a new line , by adding -e flag to the command   "
+
+Variables can store the repeated values and reference them when ever we need them. 
+
+variables can be accessed by using $<variable name> after they are assigned.  
+
+    app_file = application.logs
+    $app_file
+
+Writing to files 
+`>` This character overwrites everytime the command is executed
+ 
+`>>`  This character appends every new output to the existing file content.
+
+Conditionals : 
+  
+  `if` starts the conditionals
+  `then` runs if condition is true
+  `else` runs if the condition is false
+  `elif` else if for multiple condition 
+  `fi` close the if block like and end statement. 
     
